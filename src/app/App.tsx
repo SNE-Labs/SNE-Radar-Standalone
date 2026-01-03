@@ -6,6 +6,7 @@ import { Button } from './components/ui/button';
 import { Badge } from './components/ui/badge';
 import { Separator } from './components/ui/separator';
 import { Toaster, toast } from 'sonner';
+import { useAccount } from 'wagmi';
 import { useAuth } from '../hooks/useAuth';
 import { useDownload } from '../hooks/useDownload';
 
@@ -29,14 +30,12 @@ export default function App() {
   // Real auth integration (UI intact)
   const { authState, userLicenses, connectWallet: realConnectWallet, hasValidLicense } = useAuth();
   const { downloadState, downloadExecutable } = useDownload();
+  const { address } = useAccount(); // Get real address from wagmi
 
   // UI adaptation: map auth state to wallet state for existing UI
   const walletState = authState === 'connected' ? 'connected' :
                      authState === 'connecting' ? 'connecting' :
                      authState === 'wrong-network' ? 'wrong-network' : 'disconnected';
-
-  // Mock wallet address for UI (real address comes from wagmi)
-  const [address] = useState<string>('0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb9');
 
   // Adapted connect function (UI intact, backend real)
   const connectWallet = async () => {

@@ -1,8 +1,8 @@
 // Hook para autenticação SIWE real
 // Mantém a UI igual, mas conecta com backend
 
-import { useState } from 'react';
-import { useAccount, useSignMessage } from 'wagmi';
+import { useState, useEffect } from 'react';
+import { useAccount, useSignMessage, useConnect } from 'wagmi';
 import { getAuthNonce, verifyAuthSignature, getUserLicenses, type LicenseInfo } from '../services/api';
 
 type AuthState = 'disconnected' | 'connecting' | 'connected' | 'wrong-network';
@@ -14,38 +14,86 @@ export const useAuth = () => {
 
   const { address, isConnected } = useAccount();
   const { signMessageAsync } = useSignMessage();
+  const { connect, connectors, isPending } = useConnect();
 
-  const connectWallet = async () => {
-    if (!address || !isConnected) {
-      throw new Error('Wallet not connected');
-    }
+  // Effect to handle wallet connection state changes
+  useEffect(() => {
+    console.log('Wallet state changed:', { isConnected, address, authState });
+  }, [isConnected, address, authState]);
+
+  const performSIWE = async () => {
+    if (!address) return;
 
     try {
-      setAuthState('connecting');
-
       // 1. Get nonce from backend
+      console.log('Getting nonce for address:', address);
       const nonce = await getAuthNonce(address);
 
       // 2. Create SIWE message
       const message = `snelabs.space wants you to sign in with your Ethereum account:\n${address}\n\nSign in to SNE Radar\n\nURI: https://snelabs.space\nVersion: 1\nChain ID: 1\nNonce: ${nonce}\nIssued At: ${new Date().toISOString()}`;
 
+      console.log('Requesting signature for message:', message);
+
       // 3. Sign message
       const signature = await signMessageAsync({ message });
+
+      console.log('Verifying signature with backend...');
 
       // 4. Verify with backend (creates session)
       const result = await verifyAuthSignature(message, signature);
 
       if (result.success) {
         setAuthState('connected');
+        setShouldAuthenticate(false);
         // Load user licenses
         await loadUserLicenses();
+        console.log('Authentication successful!');
       } else {
         throw new Error(result.error || 'Authentication failed');
       }
 
     } catch (error) {
+      console.error('SIWE error:', error);
+      setAuthState('disconnected');
+      setShouldAuthenticate(false);
+      throw error;
+    }
+  };
+
+  const connectWallet = async () => {
+    try {
+      setAuthState('connecting');
+
+      // 1. Connect wallet first (if not connected)
+      if (!address || !isConnected) {
+        console.log('Connecting wallet...');
+        const connector = connectors.find(c => c.name === 'MetaMask') || connectors[0];
+        console.log('Using connector:', connector?.name);
+
+        connect({ connector });
+
+        // Wait for connection (simple polling approach)
+        let attempts = 0;
+        while (!isConnected && attempts < 50) { // 5 seconds max
+          await new Promise(resolve => setTimeout(resolve, 100));
+          attempts++;
+        }
+
+        if (!isConnected) {
+          throw new Error('Wallet connection timeout');
+        }
+
+        console.log('Wallet connected successfully');
+      }
+
+      // 2. Proceed with SIWE authentication
+      console.log('Proceeding with SIWE...');
+      await performSIWE();
+
+    } catch (error) {
       console.error('Auth error:', error);
       setAuthState('disconnected');
+      setShouldAuthenticate(false);
       throw error;
     }
   };
