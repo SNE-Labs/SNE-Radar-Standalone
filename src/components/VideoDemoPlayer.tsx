@@ -2,14 +2,14 @@ export const VideoDemoPlayer = () => {
   return (
     <div className="relative rounded-lg overflow-hidden bg-black/50">
       <video
-        className="w-full h-auto max-h-64 object-contain"
+        className="w-full h-auto max-h-64 object-contain rounded-2xl"
         autoPlay
         muted
         loop
         playsInline
-        preload="auto"
+        preload="metadata"
       >
-        <source src="/SNERADARDEMO.mp4" type="video/mp4" />
+        <source src={`${import.meta.env.BASE_URL}demo.mp4`} type="video/mp4" />
         Seu navegador não suporta vídeos.
       </video>
 
