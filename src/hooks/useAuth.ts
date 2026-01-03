@@ -8,10 +8,12 @@ import { getUserLicenses, type LicenseInfo } from '../services/api';
 
 type AuthState = 'disconnected' | 'connecting' | 'connected' | 'wrong-network';
 
-// Configurações SIWE - devem corresponder ao backend
-const SIWE_DOMAIN = import.meta.env.VITE_SIWE_DOMAIN || 'radar.snelabs.space';
-const SIWE_ORIGIN = import.meta.env.VITE_SIWE_ORIGIN || 'https://radar.snelabs.space';
+// Configurações SIWE - devem corresponder exatamente ao backend
+const SIWE_DOMAIN = 'radar.snelabs.space';
+const SIWE_ORIGIN = 'https://radar.snelabs.space';
 const CHAIN_ID = 534351; // Scroll Sepolia - deve corresponder ao backend
+
+console.log('SIWE Config:', { SIWE_DOMAIN, SIWE_ORIGIN, CHAIN_ID });
 
 export const useAuth = () => {
   const [authState, setAuthState] = useState<AuthState>('disconnected');
@@ -67,7 +69,21 @@ export const useAuth = () => {
       const nonce = data.nonce;
 
       // 2. Criar mensagem SIWE manualmente (compatível com backend)
-      const messageToSign = `${SIWE_DOMAIN} wants you to sign in with your Ethereum account:\n${address}\n\nSign in to SNE Radar\n\nURI: ${SIWE_ORIGIN}\nVersion: 1\nChain ID: ${CHAIN_ID}\nNonce: ${nonce}\nIssued At: ${new Date().toISOString()}\nExpiration Time: ${new Date(Date.now() + 5 * 60 * 1000).toISOString()}`;
+      // IMPORTANTE: Deve corresponder exatamente ao formato esperado pelo backend
+      const issuedAt = new Date().toISOString();
+      const expirationTime = new Date(Date.now() + 5 * 60 * 1000).toISOString();
+
+      const messageToSign = `${SIWE_DOMAIN} wants you to sign in with your Ethereum account:\n${address}\n\nSign in to SNE Radar\n\nURI: ${SIWE_ORIGIN}\nVersion: 1\nChain ID: ${CHAIN_ID}\nNonce: ${nonce}\nIssued At: ${issuedAt}\nExpiration Time: ${expirationTime}`;
+
+      console.log('SIWE Message components:', {
+        domain: SIWE_DOMAIN,
+        address,
+        origin: SIWE_ORIGIN,
+        chainId: CHAIN_ID,
+        nonce,
+        issuedAt,
+        expirationTime
+      });
       console.log('Requesting signature for message:', messageToSign);
 
       // 3. Solicitar assinatura
@@ -76,6 +92,12 @@ export const useAuth = () => {
       console.log('Verifying signature with backend...');
 
       // 4. Autenticar via backend
+      console.log('Sending to backend:', {
+        message: messageToSign,
+        signature: signature.substring(0, 50) + '...', // Truncate for logging
+        endpoint: 'https://api.snelabs.space/api/auth/siwe'
+      });
+
       const authResponse = await fetch('https://api.snelabs.space/api/auth/siwe', {
         method: 'POST',
         headers: {
@@ -87,12 +109,22 @@ export const useAuth = () => {
         }),
       });
 
+      console.log('Backend response status:', authResponse.status);
+
       if (!authResponse.ok) {
-        const errorData = await authResponse.json();
+        const errorText = await authResponse.text();
+        console.error('Backend error response:', errorText);
+        let errorData;
+        try {
+          errorData = JSON.parse(errorText);
+        } catch {
+          errorData = { error: errorText };
+        }
         throw new Error(errorData.error || `Authentication failed: ${authResponse.status}`);
       }
 
       const result = await authResponse.json();
+      console.log('Backend success response:', result);
 
       if (result.success) {
         setAuthState('connected');
