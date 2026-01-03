@@ -4,7 +4,7 @@
 import { useState, useEffect } from 'react';
 import { useAccount, useSignMessage, useConnect, useDisconnect } from 'wagmi';
 import { toast } from 'sonner';
-import { getAuthNonce, verifyAuthSignature, getUserLicenses, type LicenseInfo } from '../services/api';
+import { getUserLicenses, type LicenseInfo } from '../services/api';
 
 type AuthState = 'disconnected' | 'connecting' | 'connected' | 'wrong-network';
 
@@ -51,7 +51,20 @@ export const useAuth = () => {
     try {
       // 1. Obter nonce do backend
       console.log('Getting nonce for address:', address);
-      const nonce = await getAuthNonce(address);
+      const response = await fetch('https://api.snelabs.space/api/auth/nonce', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ address }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to get nonce: ${response.status}`);
+      }
+
+      const data = await response.json();
+      const nonce = data.nonce;
 
       // 2. Criar mensagem SIWE manualmente (compatível com backend)
       const messageToSign = `${SIWE_DOMAIN} wants you to sign in with your Ethereum account:\n${address}\n\nSign in to SNE Radar\n\nURI: ${SIWE_ORIGIN}\nVersion: 1\nChain ID: ${CHAIN_ID}\nNonce: ${nonce}\nIssued At: ${new Date().toISOString()}\nExpiration Time: ${new Date(Date.now() + 5 * 60 * 1000).toISOString()}`;
@@ -63,7 +76,23 @@ export const useAuth = () => {
       console.log('Verifying signature with backend...');
 
       // 4. Autenticar via backend
-      const result = await verifyAuthSignature(messageToSign, signature);
+      const authResponse = await fetch('https://api.snelabs.space/api/auth/siwe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: messageToSign,
+          signature,
+        }),
+      });
+
+      if (!authResponse.ok) {
+        const errorData = await authResponse.json();
+        throw new Error(errorData.error || `Authentication failed: ${authResponse.status}`);
+      }
+
+      const result = await authResponse.json();
 
       if (result.success) {
         setAuthState('connected');
