@@ -44,7 +44,6 @@ export const useAuth = () => {
 
       if (result.success) {
         setAuthState('connected');
-        setShouldAuthenticate(false);
         // Load user licenses
         await loadUserLicenses();
         console.log('Authentication successful!');
@@ -55,7 +54,6 @@ export const useAuth = () => {
     } catch (error) {
       console.error('SIWE error:', error);
       setAuthState('disconnected');
-      setShouldAuthenticate(false);
       throw error;
     }
   };
@@ -70,17 +68,15 @@ export const useAuth = () => {
         const connector = connectors.find(c => c.name === 'MetaMask') || connectors[0];
         console.log('Using connector:', connector?.name);
 
+        // Connect and wait a bit for the connection to establish
         connect({ connector });
 
-        // Wait for connection (simple polling approach)
-        let attempts = 0;
-        while (!isConnected && attempts < 50) { // 5 seconds max
-          await new Promise(resolve => setTimeout(resolve, 100));
-          attempts++;
-        }
+        // Simple delay to allow wallet connection to process
+        await new Promise(resolve => setTimeout(resolve, 2000));
 
-        if (!isConnected) {
-          throw new Error('Wallet connection timeout');
+        // Check if connection was successful
+        if (!address || !isConnected) {
+          throw new Error('Please connect your wallet in MetaMask');
         }
 
         console.log('Wallet connected successfully');
@@ -93,7 +89,6 @@ export const useAuth = () => {
     } catch (error) {
       console.error('Auth error:', error);
       setAuthState('disconnected');
-      setShouldAuthenticate(false);
       throw error;
     }
   };
