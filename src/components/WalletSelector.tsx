@@ -57,6 +57,13 @@ export const WalletSelector: React.FC<WalletSelectorProps> = ({
     }
   };
 
+  // Filtrar conectores duplicados e mostrar apenas os relevantes
+  const relevantConnectors = availableConnectors.filter(connector =>
+    connector.name === 'MetaMask' ||
+    connector.name === 'WalletConnect' ||
+    (connector.name === 'Injected' && !availableConnectors.some(c => c.name === 'MetaMask'))
+  );
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md bg-gray-900 border-gray-700">
@@ -65,7 +72,7 @@ export const WalletSelector: React.FC<WalletSelectorProps> = ({
         </DialogHeader>
 
         <div className="space-y-3 mt-4">
-          {availableConnectors.map((connector) => (
+          {relevantConnectors.map((connector) => (
             <motion.div
               key={connector.id}
               whileHover={{ scale: 1.02 }}

@@ -1,6 +1,6 @@
 import { http, createConfig } from 'wagmi'
 import { scroll, scrollSepolia } from 'wagmi/chains'
-import { walletConnect, injected } from 'wagmi/connectors'
+import { walletConnect, injected, metaMask } from 'wagmi/connectors'
 
 // Get project ID from env - required for WalletConnect
 const projectId = import.meta.env.VITE_WALLETCONNECT_PROJECT_ID
@@ -13,7 +13,8 @@ if (!projectId) {
 export const config = createConfig({
   chains: [scroll, scrollSepolia],
   connectors: [
-    injected(), // MetaMask, Brave, etc.
+    metaMask(), // MetaMask específico
+    injected(), // Outras wallets injetadas (Brave, etc.)
     walletConnect({ projectId }),
   ],
   transports: {
