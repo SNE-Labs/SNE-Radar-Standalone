@@ -309,23 +309,24 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Video Player */}
+              {/* Video Player - Autoplay */}
               <div className="relative rounded-lg overflow-hidden bg-black/50">
                 <video
                   className="w-full h-auto max-h-64 object-contain"
-                  controls
-                  poster="/vite.svg"
-                  preload="metadata"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="auto"
                 >
                   <source src="/SNERADARDEMO.mp4" type="video/mp4" />
-                  <track kind="captions" srcLang="en" label="English" />
                   Seu navegador não suporta o elemento de vídeo.
                 </video>
 
-                {/* Overlay com controles customizados */}
-                <div className="absolute bottom-2 left-2 right-2 flex items-center justify-between text-white text-xs">
+                {/* Overlay informativo */}
+                <div className="absolute top-2 left-2 right-2 flex items-center justify-between text-white text-xs">
                   <span className="bg-black/50 px-2 py-1 rounded">SNE Radar Interface</span>
-                  <span className="bg-black/50 px-2 py-1 rounded">90s Demo</span>
+                  <span className="bg-black/50 px-2 py-1 rounded">Demo Loop</span>
                 </div>
               </div>
 
