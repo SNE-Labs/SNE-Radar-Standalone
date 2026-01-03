@@ -44,8 +44,8 @@ export default function App() {
       await realConnectWallet();
       toast.success('Wallet conectada com sucesso');
     } catch (error) {
-      toast.error('Falha na conexão');
-      console.error(error);
+      console.error('Wallet connection error:', error);
+      toast.error(error instanceof Error ? error.message : 'Falha na conexão');
     }
   };
 
@@ -58,10 +58,19 @@ export default function App() {
 
   // Mint license (UI intact, mas agora pode ser real via wagmi)
   const mintLicense = async (plan: '30D' | '365D') => {
+    // Check if wallet is connected
+    if (walletState !== 'connected') {
+      toast.error('Conecte sua wallet primeiro!');
+      return;
+    }
+
     setTxState('pending');
     setTxHash('0x' + Math.random().toString(16).substr(2, 64));
 
-    setTimeout(() => {
+    try {
+      // Simulate blockchain transaction
+      await new Promise(resolve => setTimeout(resolve, 2000));
+
       setTxState('confirmed');
       const tokenId = Math.floor(Math.random() * 10000).toString();
       const activationCode = generateActivationCode();
@@ -69,7 +78,12 @@ export default function App() {
       toast.success('Licença mintada com sucesso!');
 
       setTimeout(() => setTxState('idle'), 3000);
-    }, 2000);
+    } catch (error) {
+      console.error('Mint error:', error);
+      setTxState('failed');
+      toast.error('Erro ao mintar licença');
+      setTimeout(() => setTxState('idle'), 3000);
+    }
   };
 
   const generateActivationCode = () => {

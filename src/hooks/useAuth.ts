@@ -44,6 +44,7 @@ export const useAuth = () => {
       }
 
     } catch (error) {
+      console.error('Auth error:', error);
       setAuthState('disconnected');
       throw error;
     }

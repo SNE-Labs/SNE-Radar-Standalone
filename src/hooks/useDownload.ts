@@ -26,6 +26,7 @@ export const useDownload = () => {
       setTimeout(() => setDownloadState('idle'), 2000);
 
     } catch (err) {
+      console.error('Download error:', err);
       setDownloadState('error');
       setError(err instanceof Error ? err.message : 'Download failed');
       setTimeout(() => setDownloadState('idle'), 3000);
