@@ -24,6 +24,29 @@ Landing page profissional para distribuição do SNE Radar - Sistema Neural Estr
 2. **Mint License** → NFT na Scroll (via wagmi)
 3. **Download** → Token one-time → Redirect assinado
 
+### 🐛 Correções Recentes
+- ✅ Erro "m is not a constructor" - Corrigido configuração Wagmi
+- ✅ Erro 404 /api/download-token - Sistema de fallback implementado
+- ✅ Erro "Wallet not connected" - Validação antes de operações
+- ✅ Dependências limpas - Removidas bibliotecas não utilizadas
+
+## ⚙️ Configuração de Ambiente
+
+### WalletConnect Project ID
+```bash
+# 1. Acesse https://cloud.walletconnect.com/
+# 2. Crie um projeto
+# 3. Copie o Project ID
+# 4. Crie arquivo .env.local:
+echo "VITE_WALLETCONNECT_PROJECT_ID=your_project_id_here" > .env.local
+```
+
+### Desenvolvimento com Backend Local
+```bash
+# Se estiver rodando backend localmente:
+echo "VITE_API_BASE=http://localhost:5000/api" >> .env.local
+```
+
 ## 🛠️ Setup Local
 
 ### 1. Instalar dependências
