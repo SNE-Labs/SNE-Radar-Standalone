@@ -1,17 +1,20 @@
 import { http, createConfig } from 'wagmi'
 import { scroll, scrollSepolia } from 'wagmi/chains'
-import { walletConnect, injected, metaMask } from 'wagmi/connectors'
+import { walletConnect, injected } from 'wagmi/connectors'
 
-// Get project ID from env or use demo
-const projectId = import.meta.env.VITE_WALLETCONNECT_PROJECT_ID || 'demo-project-id'
+// Get project ID from env - required for WalletConnect
+const projectId = import.meta.env.VITE_WALLETCONNECT_PROJECT_ID
+
+if (!projectId) {
+  console.warn('VITE_WALLETCONNECT_PROJECT_ID is required for WalletConnect to work')
+}
 
 // Configuração Wagmi para Scroll
 export const config = createConfig({
   chains: [scroll, scrollSepolia],
   connectors: [
-    injected(),
+    injected(), // MetaMask, Brave, etc.
     walletConnect({ projectId }),
-    metaMask(),
   ],
   transports: {
     [scroll.id]: http(),

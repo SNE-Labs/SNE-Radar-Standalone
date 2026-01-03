@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ChevronDown, Download, Copy, Check, ExternalLink, Menu, X } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './components/ui/accordion';
@@ -10,6 +10,7 @@ import { useAccount } from 'wagmi';
 import { useAuth } from '../hooks/useAuth';
 import { useDownload } from '../hooks/useDownload';
 import { VideoDemoPlayer } from '../components/VideoDemoPlayer';
+import { WalletSelector } from '../components/WalletSelector';
 
 // Mock transaction state (UI intact)
 type TxState = 'idle' | 'pending' | 'confirmed' | 'failed';
@@ -27,9 +28,10 @@ export default function App() {
   const [mintedLicense, setMintedLicense] = useState<MintedLicense | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [copiedCode, setCopiedCode] = useState(false);
+  const [walletSelectorOpen, setWalletSelectorOpen] = useState(false);
 
   // Real auth integration (UI intact)
-  const { authState, userLicenses, connectWallet: realConnectWallet, hasValidLicense } = useAuth();
+  const { authState, userLicenses, connectWallet: realConnectWallet, hasValidLicense, getAvailableConnectors } = useAuth();
   const { downloadState, downloadExecutable } = useDownload();
   const { address } = useAccount(); // Get real address from wagmi
 
@@ -39,13 +41,18 @@ export default function App() {
                      authState === 'wrong-network' ? 'wrong-network' : 'disconnected';
 
   // Adapted connect function (UI intact, backend real)
-  const connectWallet = async () => {
+  const connectWallet = () => {
+    setWalletSelectorOpen(true);
+  };
+
+  const handleWalletSelect = async (connectorName: string) => {
     try {
-      await realConnectWallet();
+      await realConnectWallet(connectorName);
       toast.success('Wallet conectada com sucesso');
     } catch (error) {
       console.error('Wallet connection error:', error);
       toast.error(error instanceof Error ? error.message : 'Falha na conexão');
+      throw error; // Re-throw to let WalletSelector handle UI
     }
   };
 
@@ -856,6 +863,15 @@ export default function App() {
           </Button>
         </div>
       </div>
+
+      {/* Wallet Selector Modal */}
+      <WalletSelector
+        isOpen={walletSelectorOpen}
+        onClose={() => setWalletSelectorOpen(false)}
+        onSelectWallet={handleWalletSelect}
+        availableConnectors={getAvailableConnectors()}
+        isConnecting={authState === 'connecting'}
+      />
 
       {/* Toaster */}
       <Toaster />

@@ -42,7 +42,7 @@ export const useAuth = () => {
       const nonce = await getAuthNonce(address);
 
       // 2. Create SIWE message
-      const message = `snelabs.space wants you to sign in with your Ethereum account:\n${address}\n\nSign in to SNE Radar\n\nURI: https://snelabs.space\nVersion: 1\nChain ID: 1\nNonce: ${nonce}\nIssued At: ${new Date().toISOString()}`;
+      const message = `snelabs.space wants you to sign in with your Ethereum account:\n${address}\n\nSign in to SNE Radar\n\nURI: https://snelabs.space\nVersion: 1\nChain ID: 534352\nNonce: ${nonce}\nIssued At: ${new Date().toISOString()}`;
 
       console.log('Requesting signature for message:', message);
 
@@ -70,7 +70,7 @@ export const useAuth = () => {
     }
   };
 
-  const connectWallet = async () => {
+  const connectWallet = async (preferredConnector?: string) => {
     try {
       setAuthState('connecting');
 
@@ -83,8 +83,26 @@ export const useAuth = () => {
 
       // Connect wallet - useEffect will handle the rest
       console.log('Connecting wallet...');
-      const connector = connectors.find(c => c.name === 'MetaMask') || connectors[0];
+
+      let connector;
+
+      if (preferredConnector) {
+        // Use preferred connector if specified
+        connector = connectors.find(c => c.name.toLowerCase().includes(preferredConnector.toLowerCase()));
+      }
+
+      if (!connector) {
+        // Priority: WalletConnect > MetaMask > Others
+        connector = connectors.find(c => c.name === 'WalletConnect') ||
+                   connectors.find(c => c.name === 'MetaMask') ||
+                   connectors[0];
+      }
+
       console.log('Using connector:', connector?.name);
+
+      if (!connector) {
+        throw new Error('No wallet connector available');
+      }
 
       connect({ connector });
 
@@ -122,6 +140,14 @@ export const useAuth = () => {
     // Backend handles logout via API, but for now just reset state
   };
 
+  const getAvailableConnectors = () => {
+    return connectors.map(connector => ({
+      id: connector.id,
+      name: connector.name,
+      ready: connector.ready,
+    }));
+  };
+
   return {
     authState,
     userLicenses,
@@ -129,6 +155,7 @@ export const useAuth = () => {
     connectWallet,
     loadUserLicenses,
     hasValidLicense,
-    logout
+    logout,
+    getAvailableConnectors,
   };
 };
