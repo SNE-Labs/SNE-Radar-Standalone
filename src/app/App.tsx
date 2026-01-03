@@ -191,14 +191,15 @@ export default function App() {
             >
               <div className="px-4 py-4 space-y-3">
                 <a href="#features" className="block text-gray-400 hover:text-gray-100 py-2">Features</a>
+                <a href="#security" className="block text-gray-400 hover:text-gray-100 py-2">Security</a>
+                <a href="#how-it-works" className="block text-gray-400 hover:text-gray-100 py-2">How it works</a>
                 <a href="#pricing" className="block text-gray-400 hover:text-gray-100 py-2">Pricing</a>
                 <a href="#faq" className="block text-gray-400 hover:text-gray-100 py-2">FAQ</a>
-                <div className="pt-3 space-y-2">
-                  {walletState === 'disconnected' && (
-                    <Button onClick={connectWallet} className="w-full" variant="outline">
-                      Connect Wallet
-                    </Button>
-                  )}
+
+                <div className="pt-3 border-t border-gray-800/50">
+                  <a href="#post-mint" className="block bg-orange-500 text-white text-center py-2 px-4 rounded hover:bg-orange-600">
+                    Download Instructions
+                  </a>
                 </div>
               </div>
             </motion.div>
@@ -256,23 +257,27 @@ export default function App() {
                 ))}
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-4 mb-6">
-                <Button 
+              <div className="flex flex-col sm:flex-row gap-4 mb-4">
+                <Button
                   size="lg"
                   onClick={() => mintLicense('30D')}
                   className="bg-orange-500 hover:bg-orange-600 text-white transition-all duration-200 hover:shadow-lg hover:shadow-orange-500/20"
                 >
-                  Mint 30 dias
+                  Mint license (30D)
                 </Button>
-                <Button 
+                <Button
                   size="lg"
                   onClick={() => mintLicense('365D')}
                   variant="outline"
                   className="border-gray-700 hover:border-orange-500/50 transition-all duration-200"
                 >
-                  Mint 365 dias
+                  Mint license (365D)
                 </Button>
               </div>
+
+              <p className="text-xs text-gray-300 mb-6 border-l-2 border-gray-800 pl-3">
+                Mint = emitir sua licença NFT na Scroll • Transferível • 1 dispositivo
+              </p>
 
               <a href="#" className="text-sm text-gray-400 hover:text-orange-500 transition-colors inline-flex items-center gap-2 group">
                 Ver demo (90s)
@@ -428,9 +433,10 @@ export default function App() {
 
           <div className="grid md:grid-cols-3 gap-6 mb-8">
             {[
-              { title: 'SIWE Authentication', desc: 'Login por assinatura. Sem senha.' },
-              { title: 'On-chain validity', desc: 'Licença verificável na Scroll.' },
-              { title: 'Device activation', desc: 'Sessões renováveis para manter controle.' }
+              { title: 'Execução Local', desc: 'Roda no seu PC. Sem terminal na nuvem.' },
+              { title: 'Validade On-Chain', desc: 'Licença verificável na blockchain Scroll.' },
+              { title: 'Login Sem Senha', desc: 'Autenticação por assinatura SIWE.' },
+              { title: '1 Dispositivo', desc: 'Ativação vinculada ao dispositivo.' }
             ].map((item, i) => (
               <motion.div
                 key={i}
@@ -473,9 +479,9 @@ export default function App() {
 
           <div className="grid md:grid-cols-3 gap-8">
             {[
-              { step: '01', title: 'Conecte sua wallet (SIWE)', desc: 'Autenticação segura por assinatura' },
-              { step: '02', title: 'Minta sua licença (30D ou 365D) na Scroll', desc: 'NFT ERC-721 transferível' },
-              { step: '03', title: 'Baixe e ative no app', desc: 'Token ID + Activation Code' }
+              { step: '01', title: 'Connect wallet (SIWE)', desc: 'Secure authentication by signature' },
+              { step: '02', title: 'Mint your license (30D/365D) on Scroll', desc: 'Transferable NFT license' },
+              { step: '03', title: 'Download + Activate', desc: 'Token ID + Activation code' }
             ].map((item, i) => (
               <motion.div
                 key={i}
@@ -497,9 +503,7 @@ export default function App() {
           </div>
 
           <div className="mt-12 text-center text-sm text-gray-400 border-l-2 border-orange-500/30 pl-4 py-2 bg-gray-900/20 rounded-r">
-            <p>
-              Se a licença for transferida, o acesso do owner anterior expira no próximo refresh.
-            </p>
+            <p>Transfer: previous owner loses access on next refresh</p>
           </div>
         </div>
       </section>
@@ -537,8 +541,10 @@ export default function App() {
               </div>
 
               <div className="mb-6">
-                <div className="text-sm text-gray-400 mb-2">Preço on-chain</div>
-                <div className="text-xs font-mono text-gray-500">Exibido na wallet</div>
+                <div className="text-sm text-gray-400 mb-2">Preço</div>
+                <div className="text-lg font-mono text-white mb-1">49 USDC</div>
+                <div className="text-xs text-gray-400">+ ~0.001 ETH gas ≈ $0.10</div>
+                <div className="text-xs text-gray-500 mt-1">Gas na Scroll costuma ser baixo</div>
               </div>
 
               <Button 
@@ -552,7 +558,7 @@ export default function App() {
                 disabled={txState === 'pending'}
                 className="w-full bg-orange-500 hover:bg-orange-600 transition-all duration-200"
               >
-                {txState === 'pending' ? 'Minting...' : 'Mint 30D'}
+                {txState === 'pending' ? 'Minting...' : 'Mint license (30D)'}
               </Button>
             </motion.div>
 
@@ -578,8 +584,10 @@ export default function App() {
               </div>
 
               <div className="mb-6">
-                <div className="text-sm text-gray-400 mb-2">Preço on-chain</div>
-                <div className="text-xs font-mono text-gray-500">Exibido na wallet</div>
+                <div className="text-sm text-gray-400 mb-2">Preço com desconto</div>
+                <div className="text-lg font-mono text-white mb-1">399 USDC</div>
+                <div className="text-xs text-gray-400">+ ~0.001 ETH gas ≈ $0.10</div>
+                <div className="text-xs text-gray-500 mt-1">≈ $1.09/dia • Melhor valor</div>
               </div>
 
               <Button 
@@ -593,7 +601,7 @@ export default function App() {
                 disabled={txState === 'pending'}
                 className="w-full bg-orange-500 hover:bg-orange-600 transition-all duration-200"
               >
-                {txState === 'pending' ? 'Minting...' : 'Mint 365D'}
+                {txState === 'pending' ? 'Minting...' : 'Mint license (365D)'}
               </Button>
             </motion.div>
           </div>
@@ -648,7 +656,7 @@ export default function App() {
                 <div className="w-16 h-16 bg-green-500/10 border border-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Check size={32} className="text-green-500" />
                 </div>
-                <h2 className="text-3xl font-medium mb-2">Licença confirmada on-chain</h2>
+                <h2 className="text-3xl font-medium mb-2">License minted successfully!</h2>
                 <p className="text-gray-400">Token ID: #{mintedLicense.tokenId}</p>
               </div>
 
@@ -705,12 +713,15 @@ export default function App() {
                 </div>
 
                 <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-4">
-                  <h4 className="font-medium mb-3">Ativação no app</h4>
+                  <h4 className="font-medium mb-3">Como ativar</h4>
                   <ol className="space-y-2 text-sm text-gray-400">
-                    <li>1. Abra o Radar Standalone</li>
-                    <li>2. Clique em Activate</li>
-                    <li>3. Insira Token ID + Activation Code</li>
+                    <li>1. Abra o software baixado</li>
+                    <li>2. Clique em "Activate"</li>
+                    <li>3. Digite Token ID + Activation Code</li>
                   </ol>
+                  <p className="text-xs text-gray-500 mt-2">
+                    Activation: device-bound session
+                  </p>
                 </div>
 
                 <div className="text-xs text-gray-500 border-l-2 border-gray-800 pl-4">
@@ -772,6 +783,14 @@ export default function App() {
                 a: 'Basta mintar uma renovação/estender a validade on-chain.'
               },
               {
+                q: 'Preciso ter crypto para usar?',
+                a: 'Sim, aceitamos USDC ou ETH na rede Scroll. Se você não tem crypto, pode fazer bridge de exchanges como Binance ou usar serviços de compra.'
+              },
+              {
+                q: 'E se eu trocar de computador?',
+                a: 'A licença é device-bound. Para transferir: 1) Instale no novo PC, 2) Use mesmo Token ID + novo Activation Code, 3) Contate suporte se houver problemas.'
+              },
+              {
                 q: 'Isso é conselho financeiro?',
                 a: 'Não. É uma ferramenta de análise e monitoramento.'
               }
@@ -790,6 +809,13 @@ export default function App() {
               </AccordionItem>
             ))}
           </Accordion>
+
+          <div className="mt-8 text-center">
+            <p className="text-gray-400 mb-2">Precisa de ajuda?</p>
+            <a href="https://t.me/sne_support" className="text-orange-500 hover:text-orange-400 transition-colors">
+              Suporte via Telegram
+            </a>
+          </div>
         </div>
       </section>
 
@@ -832,14 +858,14 @@ export default function App() {
             onClick={() => mintLicense('30D')}
             className="flex-1 bg-orange-500 hover:bg-orange-600"
           >
-            Mint 30D
+            Mint license (30D)
           </Button>
           <Button 
             onClick={() => mintLicense('365D')}
             variant="outline"
             className="flex-1 border-gray-700"
           >
-            Mint 365D
+            Mint license (365D)
           </Button>
         </div>
       </div>

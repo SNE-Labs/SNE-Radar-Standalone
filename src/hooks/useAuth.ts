@@ -16,9 +16,21 @@ export const useAuth = () => {
   const { signMessageAsync } = useSignMessage();
   const { connect, connectors, isPending } = useConnect();
 
-  // Effect to handle wallet connection state changes
+  // Effect to handle wallet connection and proceed with SIWE
   useEffect(() => {
-    console.log('Wallet state changed:', { isConnected, address, authState });
+    const proceedWithAuth = async () => {
+      if (isConnected && address && authState === 'connecting') {
+        console.log('Wallet connected, proceeding with SIWE...');
+        try {
+          await performSIWE();
+        } catch (error) {
+          console.error('Auto SIWE failed:', error);
+          setAuthState('disconnected');
+        }
+      }
+    };
+
+    proceedWithAuth();
   }, [isConnected, address, authState]);
 
   const performSIWE = async () => {
@@ -62,29 +74,19 @@ export const useAuth = () => {
     try {
       setAuthState('connecting');
 
-      // 1. Connect wallet first (if not connected)
-      if (!address || !isConnected) {
-        console.log('Connecting wallet...');
-        const connector = connectors.find(c => c.name === 'MetaMask') || connectors[0];
-        console.log('Using connector:', connector?.name);
-
-        // Connect and wait a bit for the connection to establish
-        connect({ connector });
-
-        // Simple delay to allow wallet connection to process
-        await new Promise(resolve => setTimeout(resolve, 2000));
-
-        // Check if connection was successful
-        if (!address || !isConnected) {
-          throw new Error('Please connect your wallet in MetaMask');
-        }
-
-        console.log('Wallet connected successfully');
+      // If already connected, proceed directly with SIWE
+      if (isConnected && address) {
+        console.log('Wallet already connected, proceeding with SIWE...');
+        await performSIWE();
+        return;
       }
 
-      // 2. Proceed with SIWE authentication
-      console.log('Proceeding with SIWE...');
-      await performSIWE();
+      // Connect wallet - useEffect will handle the rest
+      console.log('Connecting wallet...');
+      const connector = connectors.find(c => c.name === 'MetaMask') || connectors[0];
+      console.log('Using connector:', connector?.name);
+
+      connect({ connector });
 
     } catch (error) {
       console.error('Auth error:', error);
