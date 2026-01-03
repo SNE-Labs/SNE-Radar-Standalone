@@ -279,14 +279,6 @@ export default function App() {
                 >
                   Choose plan
                 </Button>
-                <Button
-                  size="lg"
-                  onClick={handleWatchDemo}
-                  variant="outline"
-                  className="border-gray-700 hover:border-orange-500/50 transition-all duration-200"
-                >
-                  Watch demo (90s)
-                </Button>
               </div>
 
               <a href="#" onClick={(e) => { e.preventDefault(); handleWatchDemo(); }} className="text-sm text-gray-400 hover:text-orange-500 transition-colors inline-flex items-center gap-2 group cursor-pointer">
@@ -315,9 +307,9 @@ export default function App() {
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
             {[
-              'Desktop-first execution',
-              'On-chain licensing (Scroll)',
-              'SIWE authentication',
+              'Execução otimizada para desktop',
+              'Licenciamento on-chain (Scroll)',
+              'Autenticação SIWE',
               'Windows + macOS'
             ].map((label, i) => (
               <motion.div
@@ -337,12 +329,12 @@ export default function App() {
 
           <div className="grid md:grid-cols-2 gap-4">
             <div className="p-4 bg-gray-900/30 border border-gray-800/30 rounded-md">
-              <div className="text-xs font-mono text-orange-500 mb-1">LICENSE</div>
-              <div className="text-sm text-gray-300">License validity: on-chain</div>
+              <div className="text-xs font-mono text-orange-500 mb-1">LICENÇA</div>
+              <div className="text-sm text-gray-300">Validade verificada on-chain</div>
             </div>
             <div className="p-4 bg-gray-900/30 border border-gray-800/30 rounded-md">
-              <div className="text-xs font-mono text-orange-500 mb-1">EXECUTION</div>
-              <div className="text-sm text-gray-300">Activation: device-bound session</div>
+              <div className="text-xs font-mono text-orange-500 mb-1">EXECUÇÃO</div>
+              <div className="text-sm text-gray-300">Ativação vinculada ao dispositivo</div>
             </div>
           </div>
         </div>
@@ -575,6 +567,18 @@ export default function App() {
                 {txState === 'pending' ? 'Minting...' : 'Mint 365D'}
               </Button>
             </motion.div>
+          </div>
+
+          {/* Watch Demo Button */}
+          <div className="text-center mt-12 mb-6">
+            <Button
+              onClick={handleWatchDemo}
+              variant="outline"
+              size="lg"
+              className="border-gray-700 hover:border-orange-500/50 transition-all duration-200 px-8 py-3"
+            >
+              Watch demo (90s)
+            </Button>
           </div>
 
           {/* Transaction States */}
