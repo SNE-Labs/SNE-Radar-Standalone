@@ -88,6 +88,33 @@ export default function App() {
     }
   };
 
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handleChoosePlan = () => {
+    scrollToSection('pricing');
+  };
+
+  const handleWatchDemo = () => {
+    // Scroll para o vídeo demo na hero section
+    const heroSection = document.querySelector('.min-h-screen');
+    if (heroSection) {
+      heroSection.scrollIntoView({ behavior: 'smooth' });
+      // Adicionar um destaque temporário ao vídeo
+      const videoElement = heroSection.querySelector('video');
+      if (videoElement) {
+        videoElement.style.boxShadow = '0 0 30px rgba(234, 88, 12, 0.5)';
+        setTimeout(() => {
+          videoElement.style.boxShadow = '';
+        }, 3000);
+      }
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-gray-100 overflow-x-hidden">
       {/* Navbar */}
@@ -96,7 +123,7 @@ export default function App() {
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-8">
               <div className="flex items-center gap-2">
-                <img src="/favicon/favicon.svg" alt="SNE Radar" className="w-8 h-8" />
+                <img src="/favicon/favicon-96x96.png" alt="SNE Radar" className="w-8 h-8" />
                 <span className="font-medium tracking-tight">SNE Radar</span>
               </div>
               
@@ -247,14 +274,14 @@ export default function App() {
               <div className="flex flex-col sm:flex-row gap-4 mb-6">
                 <Button
                   size="lg"
-                  onClick={() => mintLicense('30D')}
+                  onClick={handleChoosePlan}
                   className="bg-orange-500 hover:bg-orange-600 text-white transition-all duration-200 hover:shadow-lg hover:shadow-orange-500/20"
                 >
                   Choose plan
                 </Button>
                 <Button
                   size="lg"
-                  onClick={() => mintLicense('365D')}
+                  onClick={handleWatchDemo}
                   variant="outline"
                   className="border-gray-700 hover:border-orange-500/50 transition-all duration-200"
                 >
@@ -262,7 +289,7 @@ export default function App() {
                 </Button>
               </div>
 
-              <a href="#" className="text-sm text-gray-400 hover:text-orange-500 transition-colors inline-flex items-center gap-2 group">
+              <a href="#" onClick={(e) => { e.preventDefault(); handleWatchDemo(); }} className="text-sm text-gray-400 hover:text-orange-500 transition-colors inline-flex items-center gap-2 group cursor-pointer">
                 Ver demo (90s)
                 <ExternalLink size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </a>
