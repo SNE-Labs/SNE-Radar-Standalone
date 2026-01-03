@@ -22,6 +22,12 @@ export const WalletSelector: React.FC<WalletSelectorProps> = ({
   availableConnectors,
   isConnecting,
 }) => {
+  // Verificação mais robusta do MetaMask
+  const checkMetaMaskAvailable = () => {
+    return typeof window !== 'undefined' &&
+           window.ethereum &&
+           window.ethereum.isMetaMask;
+  };
   const handleWalletSelect = async (connectorId: string) => {
     try {
       await onSelectWallet(connectorId);
@@ -57,11 +63,9 @@ export const WalletSelector: React.FC<WalletSelectorProps> = ({
     }
   };
 
-  // Filtrar conectores duplicados e mostrar apenas os relevantes
+  // Filtrar conectores - mostrar injected (MetaMask) e WalletConnect
   const relevantConnectors = availableConnectors.filter(connector =>
-    connector.name === 'MetaMask' ||
-    connector.name === 'WalletConnect' ||
-    (connector.name === 'Injected' && !availableConnectors.some(c => c.name === 'MetaMask'))
+    connector.id === 'injected' || connector.id === 'walletConnect'
   );
 
   return (
@@ -80,16 +84,20 @@ export const WalletSelector: React.FC<WalletSelectorProps> = ({
             >
               <Button
                 onClick={() => handleWalletSelect(connector.id)}
-                disabled={!connector.ready || isConnecting}
+                disabled={isConnecting}
                 className="w-full bg-gray-800 hover:bg-gray-700 border border-gray-600 text-white h-14 text-lg font-medium"
                 variant="outline"
               >
                 <span className="text-2xl mr-3">{getConnectorIcon(connector.name)}</span>
                 <span className="flex-1 text-left">
-                  {getConnectorDisplayName(connector.name)}
+                  {connector.id === 'injected' ? (
+                    checkMetaMaskAvailable() ? 'MetaMask' : 'Browser Wallet'
+                  ) : getConnectorDisplayName(connector.name)}
                 </span>
-                {!connector.ready && (
-                  <span className="text-xs text-gray-400 ml-2">Não instalado</span>
+                {connector.id === 'injected' && (
+                  <span className={`text-xs ml-2 ${checkMetaMaskAvailable() ? 'text-green-400' : 'text-gray-400'}`}>
+                    {checkMetaMaskAvailable() ? 'Detectado' : 'Não detectado'}
+                  </span>
                 )}
                 {isConnecting && (
                   <motion.div
