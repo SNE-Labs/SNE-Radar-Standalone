@@ -2,7 +2,6 @@
 // Sistema de token one-time para evitar burlar
 
 import { useState } from 'react';
-import { getDownloadToken, downloadFile } from '../services/api';
 
 type DownloadState = 'idle' | 'requesting' | 'downloading' | 'error';
 
@@ -15,12 +14,26 @@ export const useDownload = () => {
       setDownloadState('requesting');
       setError('');
 
-      // 1. Get one-time token from backend
-      const { token } = await getDownloadToken(platform);
+      // 1. Solicitar token de download (com autenticação)
+      const tokenResponse = await fetch('https://api.snelabs.space/api/download-token', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include', // Importante: envia cookies HttpOnly
+        body: JSON.stringify({ platform }),
+      });
 
-      // 2. Use token to download (backend validates and redirects)
+      if (!tokenResponse.ok) {
+        const errorData = await tokenResponse.json();
+        throw new Error(errorData.error || `Failed to get download token: ${tokenResponse.status}`);
+      }
+
+      const { token } = await tokenResponse.json();
+
+      // 2. Usar token para fazer download (one-time use)
       setDownloadState('downloading');
-      downloadFile(token);
+      window.location.href = `https://api.snelabs.space/api/download/${token}`;
 
       // Reset state after successful download initiation
       setTimeout(() => setDownloadState('idle'), 2000);
