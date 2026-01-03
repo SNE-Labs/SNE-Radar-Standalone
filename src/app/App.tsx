@@ -123,7 +123,7 @@ export default function App() {
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-8">
               <div className="flex items-center gap-2">
-                <img src="/favicon/favicon-96x96.png" alt="SNE Radar" className="w-8 h-8" />
+                <img src="/favicon-96x96.png" alt="SNE Radar" className="w-8 h-8" />
                 <span className="font-medium tracking-tight">SNE Radar</span>
               </div>
               
