@@ -2,10 +2,16 @@
 // Mantém a UI igual, mas conecta com backend
 
 import { useState, useEffect } from 'react';
-import { useAccount, useSignMessage, useConnect } from 'wagmi';
+import { useAccount, useSignMessage, useConnect, useDisconnect } from 'wagmi';
+import { toast } from 'sonner';
 import { getAuthNonce, verifyAuthSignature, getUserLicenses, type LicenseInfo } from '../services/api';
 
 type AuthState = 'disconnected' | 'connecting' | 'connected' | 'wrong-network';
+
+// Configurações SIWE - devem corresponder ao backend
+const SIWE_DOMAIN = import.meta.env.VITE_SIWE_DOMAIN || 'radar.snelabs.space';
+const SIWE_ORIGIN = import.meta.env.VITE_SIWE_ORIGIN || 'https://radar.snelabs.space';
+const CHAIN_ID = 534351; // Scroll Sepolia - deve corresponder ao backend
 
 export const useAuth = () => {
   const [authState, setAuthState] = useState<AuthState>('disconnected');
@@ -14,7 +20,13 @@ export const useAuth = () => {
 
   const { address, isConnected } = useAccount();
   const { signMessageAsync } = useSignMessage();
-  const { connect, connectors, isPending } = useConnect();
+  const { connect, connectors } = useConnect();
+  const { disconnect } = useDisconnect();
+
+  // Verificar se MetaMask está disponível
+  const isMetaMaskAvailable = typeof window !== 'undefined' &&
+    window.ethereum &&
+    window.ethereum.isMetaMask;
 
   // Effect to handle wallet connection and proceed with SIWE
   useEffect(() => {
@@ -37,28 +49,28 @@ export const useAuth = () => {
     if (!address) return;
 
     try {
-      // 1. Get nonce from backend
+      // 1. Obter nonce do backend
       console.log('Getting nonce for address:', address);
       const nonce = await getAuthNonce(address);
 
-      // 2. Create SIWE message
-      const message = `snelabs.space wants you to sign in with your Ethereum account:\n${address}\n\nSign in to SNE Radar\n\nURI: https://snelabs.space\nVersion: 1\nChain ID: 534352\nNonce: ${nonce}\nIssued At: ${new Date().toISOString()}`;
+      // 2. Criar mensagem SIWE manualmente (compatível com backend)
+      const messageToSign = `${SIWE_DOMAIN} wants you to sign in with your Ethereum account:\n${address}\n\nSign in to SNE Radar\n\nURI: ${SIWE_ORIGIN}\nVersion: 1\nChain ID: ${CHAIN_ID}\nNonce: ${nonce}\nIssued At: ${new Date().toISOString()}\nExpiration Time: ${new Date(Date.now() + 5 * 60 * 1000).toISOString()}`;
+      console.log('Requesting signature for message:', messageToSign);
 
-      console.log('Requesting signature for message:', message);
-
-      // 3. Sign message
-      const signature = await signMessageAsync({ message });
+      // 3. Solicitar assinatura
+      const signature = await signMessageAsync({ message: messageToSign });
 
       console.log('Verifying signature with backend...');
 
-      // 4. Verify with backend (creates session)
-      const result = await verifyAuthSignature(message, signature);
+      // 4. Autenticar via backend
+      const result = await verifyAuthSignature(messageToSign, signature);
 
       if (result.success) {
         setAuthState('connected');
         // Load user licenses
         await loadUserLicenses();
         console.log('Authentication successful!');
+        toast.success('Autenticado com sucesso!');
       } else {
         throw new Error(result.error || 'Authentication failed');
       }
@@ -66,11 +78,12 @@ export const useAuth = () => {
     } catch (error) {
       console.error('SIWE error:', error);
       setAuthState('disconnected');
+      toast.error(error instanceof Error ? error.message : 'Erro na autenticação');
       throw error;
     }
   };
 
-  const connectWallet = async (preferredConnector?: string) => {
+  const connectWallet = async (connectorId?: string) => {
     try {
       setAuthState('connecting');
 
@@ -84,31 +97,49 @@ export const useAuth = () => {
       // Connect wallet - useEffect will handle the rest
       console.log('Connecting wallet...');
 
-      let connector;
-
-      if (preferredConnector) {
-        // Use preferred connector if specified
-        connector = connectors.find(c => c.name.toLowerCase().includes(preferredConnector.toLowerCase()));
-      }
+      const connector = connectorId
+        ? connectors.find((c) => c.id === connectorId)
+        : connectors[0] // WalletConnect por padrão
 
       if (!connector) {
-        // Priority: WalletConnect > MetaMask > Others
-        connector = connectors.find(c => c.name === 'WalletConnect') ||
-                   connectors.find(c => c.name === 'MetaMask') ||
-                   connectors[0];
+        throw new Error('Connector not found')
       }
 
-      console.log('Using connector:', connector?.name);
+      // Capturar erros de WebSocket/WalletConnect
+      try {
+        connect({ connector })
+        toast.success('Wallet conectada!')
+      } catch (connectError: any) {
+        console.error('WalletConnect connection error:', connectError)
 
-      if (!connector) {
-        throw new Error('No wallet connector available');
+        // Tratar erros específicos do WalletConnect
+        if (connectError.message?.includes('socket error') ||
+            connectError.message?.includes('Connection interrupted') ||
+            connectError.message?.includes('relayer')) {
+          throw new Error('Problema de conexão com WalletConnect. Verifique sua internet e tente novamente.')
+        }
+
+        throw connectError
       }
 
-      connect({ connector });
-
-    } catch (error) {
+    } catch (error: any) {
       console.error('Auth error:', error);
       setAuthState('disconnected');
+
+      // Mensagens de erro mais amigáveis
+      let errorMessage = 'Erro ao conectar wallet'
+
+      if (error.message?.includes('User rejected')) {
+        errorMessage = 'Conexão rejeitada pelo usuário'
+      } else if (error.message?.includes('MetaMask extension not found')) {
+        errorMessage = 'MetaMask não encontrada. Instale a extensão MetaMask.'
+      } else if (error.message?.includes('socket error') || error.message?.includes('relayer')) {
+        errorMessage = 'Problema de conexão. Verifique sua internet e tente novamente.'
+      } else if (error.message) {
+        errorMessage = error.message
+      }
+
+      toast.error(errorMessage)
       throw error;
     }
   };
@@ -157,5 +188,7 @@ export const useAuth = () => {
     hasValidLicense,
     logout,
     getAvailableConnectors,
+    isMetaMaskAvailable,
+    connectors,
   };
 };

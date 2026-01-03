@@ -22,9 +22,9 @@ export const WalletSelector: React.FC<WalletSelectorProps> = ({
   availableConnectors,
   isConnecting,
 }) => {
-  const handleWalletSelect = async (connectorName: string) => {
+  const handleWalletSelect = async (connectorId: string) => {
     try {
-      await onSelectWallet(connectorName);
+      await onSelectWallet(connectorId);
       onClose();
     } catch (error) {
       console.error('Wallet selection error:', error);
@@ -79,7 +79,7 @@ export const WalletSelector: React.FC<WalletSelectorProps> = ({
               whileTap={{ scale: 0.98 }}
             >
               <Button
-                onClick={() => handleWalletSelect(connector.name)}
+                onClick={() => handleWalletSelect(connector.id)}
                 disabled={!connector.ready || isConnecting}
                 className="w-full bg-gray-800 hover:bg-gray-700 border border-gray-600 text-white h-14 text-lg font-medium"
                 variant="outline"

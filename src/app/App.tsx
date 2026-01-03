@@ -31,7 +31,7 @@ export default function App() {
   const [walletSelectorOpen, setWalletSelectorOpen] = useState(false);
 
   // Real auth integration (UI intact)
-  const { authState, userLicenses, connectWallet: realConnectWallet, hasValidLicense, getAvailableConnectors } = useAuth();
+  const { authState, userLicenses, connectWallet: realConnectWallet, hasValidLicense, getAvailableConnectors, isMetaMaskAvailable, connectors } = useAuth();
   const { downloadState, downloadExecutable } = useDownload();
   const { address } = useAccount(); // Get real address from wagmi
 
@@ -45,13 +45,13 @@ export default function App() {
     setWalletSelectorOpen(true);
   };
 
-  const handleWalletSelect = async (connectorName: string) => {
+  const handleWalletSelect = async (connectorId: string) => {
     try {
-      await realConnectWallet(connectorName);
-      toast.success('Wallet conectada com sucesso');
+      await realConnectWallet(connectorId);
+      // Toast já é mostrado no hook
     } catch (error) {
       console.error('Wallet connection error:', error);
-      toast.error(error instanceof Error ? error.message : 'Falha na conexão');
+      // Toast já é mostrado no hook
       throw error; // Re-throw to let WalletSelector handle UI
     }
   };
