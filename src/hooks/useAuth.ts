@@ -126,14 +126,15 @@ export const useAuth = () => {
       const result = await authResponse.json();
       console.log('Backend success response:', result);
 
-      if (result.success) {
+      // Backend retorna sucesso se tem token (não necessariamente campo 'success')
+      if (result.token && result.address) {
         setAuthState('connected');
         // Load user licenses
         await loadUserLicenses();
         console.log('Authentication successful!');
         toast.success('Autenticado com sucesso!');
       } else {
-        throw new Error(result.error || 'Authentication failed');
+        throw new Error(result.error || 'Authentication failed - missing token or address');
       }
 
     } catch (error) {
