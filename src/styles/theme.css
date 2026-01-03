@@ -178,26 +178,4 @@
     font-weight: var(--font-weight-normal);
     line-height: 1.5;
   }
-
-  /* Melhorar contraste dos textos cinza */
-  .text-gray-400 {
-    @apply text-gray-300; /* Mais visível */
-  }
-
-  /* Espaçamento melhorado para cards */
-  .p-6 {
-    @apply p-8; /* Mais respiração */
-  }
-
-  /* Safe area para iOS */
-  @media (max-width: 768px) {
-    .sticky-cta {
-      padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0));
-    }
-
-    /* Evitar que CTA cubra conteúdo */
-    body {
-      padding-bottom: 120px;
-    }
-  }
 }
