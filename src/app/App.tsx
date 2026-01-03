@@ -289,7 +289,7 @@ export default function App() {
               </p>
             </motion.div>
 
-            {/* Terminal Preview Card */}
+            {/* Video Demo Card */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -298,38 +298,41 @@ export default function App() {
             >
               <div className="flex items-center justify-between mb-6">
                 <div>
-                  <div className="text-sm font-mono text-gray-400 mb-1">BTCUSDT • 1H</div>
-                  <Badge variant="secondary" className="bg-gray-500/10 text-gray-400 border-gray-700">
-                    Neutral
+                  <div className="text-sm font-mono text-gray-400 mb-1">SNE RADAR DEMO</div>
+                  <Badge variant="secondary" className="bg-orange-500/10 text-orange-500 border-orange-500/20">
+                    Live Preview
                   </Badge>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                  <span className="text-xs text-gray-400">LIVE</span>
+                  <span className="text-xs text-gray-400">DEMO</span>
                 </div>
               </div>
 
-              <div className="space-y-4">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-400">Support</span>
-                  <span className="font-mono text-green-500">$42,180</span>
-                </div>
-                <div className="h-px bg-gradient-to-r from-transparent via-gray-700 to-transparent" />
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-400">Resistance</span>
-                  <span className="font-mono text-red-500">$44,820</span>
+              {/* Video Player */}
+              <div className="relative rounded-lg overflow-hidden bg-black/50">
+                <video
+                  className="w-full h-auto max-h-64 object-contain"
+                  controls
+                  poster="/vite.svg"
+                  preload="metadata"
+                >
+                  <source src="/SNERADARDEMO.mp4" type="video/mp4" />
+                  <track kind="captions" srcLang="en" label="English" />
+                  Seu navegador não suporta o elemento de vídeo.
+                </video>
+
+                {/* Overlay com controles customizados */}
+                <div className="absolute bottom-2 left-2 right-2 flex items-center justify-between text-white text-xs">
+                  <span className="bg-black/50 px-2 py-1 rounded">SNE Radar Interface</span>
+                  <span className="bg-black/50 px-2 py-1 rounded">90s Demo</span>
                 </div>
               </div>
 
-              {/* Sparkline placeholder */}
-              <div className="mt-6 h-32 flex items-end justify-between gap-1">
-                {Array.from({ length: 40 }, (_, i) => (
-                  <div
-                    key={i}
-                    className="flex-1 bg-gradient-to-t from-orange-500/30 to-orange-500/10 rounded-t"
-                    style={{ height: `${Math.random() * 100}%` }}
-                  />
-                ))}
+              <div className="mt-4 text-center">
+                <p className="text-xs text-gray-400">
+                  Preview da interface completa • Veja como funciona em ação
+                </p>
               </div>
             </motion.div>
           </div>
