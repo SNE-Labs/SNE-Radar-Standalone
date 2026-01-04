@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronDown, Download, Copy, Check, ExternalLink, Menu, X } from 'lucide-react';
+import { ChevronDown, Download, Copy, Check, ExternalLink, Menu, X, ShieldCheck, Blocks, Laptop, KeyRound, Layers, Map, BarChart3, Star, PanelRight, RefreshCw, Monitor, Cpu, Shield, Computer, Wallet, CreditCard, Smartphone } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './components/ui/accordion';
 import { Button } from './components/ui/button';
 import { Badge } from './components/ui/badge';
@@ -116,7 +116,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-gray-100 overflow-x-hidden">
+    <div className="min-h-screen bg-[#0a0a0a] text-gray-100 overflow-x-hidden pb-28 md:pb-0">
       {/* Navbar */}
       <nav className="sticky top-0 z-50 bg-[#0a0a0a]/80 backdrop-blur-xl border-b border-gray-800/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -131,8 +131,8 @@ export default function App() {
                 <a href="#features" className="text-gray-400 hover:text-gray-100 transition-colors duration-200">Features</a>
                 <a href="#pricing" className="text-gray-400 hover:text-gray-100 transition-colors duration-200">Pricing</a>
                 <a href="#faq" className="text-gray-400 hover:text-gray-100 transition-colors duration-200">FAQ</a>
-                <a href="#" className="text-gray-400 hover:text-gray-100 transition-colors duration-200">Docs</a>
-                <a href="#" className="text-gray-400 hover:text-gray-100 transition-colors duration-200">Status</a>
+                <a href="https://snelabs.space/docs#overview" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-gray-100 transition-colors duration-200">SNE OS (Docs)</a>
+                <a href="https://snelabs.space/home" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-gray-100 transition-colors duration-200">Status</a>
               </div>
             </div>
 
@@ -222,7 +222,7 @@ export default function App() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative pt-20 pb-32 px-4 sm:px-6 lg:px-8 overflow-hidden">
+      <section className="relative pt-16 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
         {/* Animated Grid Background */}
         <div className="absolute inset-0 opacity-20">
           <div className="absolute inset-0" style={{
@@ -232,41 +232,40 @@ export default function App() {
         </div>
 
         <div className="max-w-7xl mx-auto relative">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-12 gap-8 items-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
+              className="lg:col-span-7"
             >
               <div className="inline-block px-3 py-1 bg-orange-500/10 border border-orange-500/20 rounded-full mb-6">
                 <span className="text-sm text-orange-500 font-mono">STANDALONE • DESKTOP</span>
               </div>
               
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-medium tracking-tight mb-6 leading-tight">
-                Radar Standalone.<br />
-                <span className="text-orange-500">Acesso ao NTE no desktop.</span>
+                Radar Standalone<br />
+                <span className="text-orange-500">NTE no desktop. Zero latência.</span>
               </h1>
 
               <p className="text-xl text-gray-400 mb-8 leading-relaxed">
-                Sinais e contexto em tempo real com execução local no Windows e macOS.
-                Licença on-chain (NFT) na Scroll — transferível e com expiração automática.
+                Inteligência de mercado e sinais em tempo real com execução local no Windows e macOS. Licença on-chain (NFT) na Scroll — transferível e com expiração automática.
               </p>
 
-              <div className="space-y-3 mb-10">
+              <div className="flex flex-wrap gap-3 mb-10">
                 {[
-                  'Execução local, baixa latência',
-                  '1 dispositivo ativo (controle + updates)',
-                  'Licença verificável on-chain (owner + validade)'
+                  'Execução local',
+                  '1 dispositivo ativo',
+                  'NFT on-chain (Scroll)'
                 ].map((item, i) => (
                   <motion.div
                     key={i}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2 + i * 0.1 }}
-                    className="flex items-start gap-3"
+                    className="px-4 py-2 bg-white/5 rounded-full border border-white/10"
                   >
-                    <div className="w-1.5 h-1.5 bg-orange-500 rounded-full mt-2" />
-                    <span className="text-gray-300">{item}</span>
+                    <span className="text-sm text-gray-300">{item}</span>
                   </motion.div>
                 ))}
               </div>
@@ -281,10 +280,9 @@ export default function App() {
                 </Button>
               </div>
 
-              <a href="#" onClick={(e) => { e.preventDefault(); handleWatchDemo(); }} className="text-sm text-gray-400 hover:text-orange-500 transition-colors inline-flex items-center gap-2 group cursor-pointer">
-                Ver demo (90s)
-                <ExternalLink size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-              </a>
+              <div className="text-xs text-gray-500 mt-4">
+                Scroll • USDC • NFT transferível • 1 dispositivo ativo
+              </div>
 
               <p className="text-xs text-gray-500 mt-8 border-l-2 border-gray-800 pl-4">
                 Ferramenta de análise e monitoramento. Não constitui recomendação de investimento.
@@ -295,6 +293,7 @@ export default function App() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, delay: 0.2 }}
+              className="lg:col-span-5"
             >
               <VideoDemoPlayer />
             </motion.div>
@@ -305,36 +304,72 @@ export default function App() {
       {/* Trust Strip */}
       <section className="py-12 px-4 sm:px-6 lg:px-8 border-y border-gray-800/50">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="text-center mb-8"
+          >
+            <h3 className="text-lg font-semibold text-white mb-2">Arquitetura de execução e licenciamento</h3>
+            <p className="text-sm text-gray-400">Controle local + validade on-chain. Sem login e senha.</p>
+          </motion.div>
+
+          <div className="flex flex-wrap justify-center gap-3 mb-12">
             {[
-              'Execução otimizada para desktop',
-              'Licenciamento on-chain (Scroll)',
-              'Autenticação SIWE',
-              'Windows + macOS'
-            ].map((label, i) => (
+              { icon: Monitor, label: 'Desktop-first' },
+              { icon: Blocks, label: 'Licença on-chain (Scroll)' },
+              { icon: ShieldCheck, label: 'SIWE' },
+              { icon: Computer, label: 'Windows + macOS' }
+            ].map((item, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="text-center p-4 border border-gray-800/30 rounded-md bg-gray-900/20"
+                className="flex items-center gap-2 px-3 py-2 bg-white/5 rounded-full cursor-default"
               >
-                <div className="text-xs font-mono text-gray-400 uppercase tracking-wider">
-                  {label}
-                </div>
+                <item.icon className="h-4 w-4 text-orange-400" />
+                <span className="text-xs font-medium text-gray-300">{item.label}</span>
               </motion.div>
             ))}
           </div>
 
-          <div className="grid md:grid-cols-2 gap-4">
-            <div className="p-4 bg-gray-900/30 border border-gray-800/30 rounded-md">
-              <div className="text-xs font-mono text-orange-500 mb-1">LICENÇA</div>
-              <div className="text-sm text-gray-300">Validade verificada on-chain</div>
-            </div>
-            <div className="p-4 bg-gray-900/30 border border-gray-800/30 rounded-md">
-              <div className="text-xs font-mono text-orange-500 mb-1">EXECUÇÃO</div>
-              <div className="text-sm text-gray-300">Ativação vinculada ao dispositivo</div>
+          <div className="grid md:grid-cols-2 gap-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="relative p-6 bg-gradient-to-b from-white/6 to-transparent border border-white/10 rounded-2xl hover:-translate-y-0.5 hover:border-white/20 transition"
+            >
+              <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-orange-500 to-orange-600 rounded-t-2xl"></div>
+              <div className="text-xs font-mono text-orange-500 mb-2">LICENÇA</div>
+              <h4 className="text-lg font-semibold text-white mb-2">Validade verificada on-chain</h4>
+              <p className="text-sm text-white/70 mb-3">Acesso acompanha o NFT e expira automaticamente (30D/365D).</p>
+              <div className="text-xs text-orange-400/80 font-medium">Outcome: licença transferível</div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="relative p-6 bg-gradient-to-b from-white/6 to-transparent border border-white/10 rounded-2xl hover:-translate-y-0.5 hover:border-white/20 transition"
+            >
+              <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-orange-500 to-orange-600 rounded-t-2xl"></div>
+              <div className="text-xs font-mono text-orange-500 mb-2">EXECUÇÃO</div>
+              <h4 className="text-lg font-semibold text-white mb-2">Ativação vinculada ao dispositivo</h4>
+              <p className="text-sm text-white/70 mb-3">Sessão por dispositivo para manter controle, revogar e atualizar.</p>
+              <div className="text-xs text-orange-400/80 font-medium">Outcome: distribuição controlada</div>
+            </motion.div>
+          </div>
+
+          <div className="text-center mt-8">
+            <div className="inline-flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-white/5 to-transparent border border-white/10 rounded-xl">
+              <KeyRound className="h-4 w-4 text-orange-400" />
+              <span className="text-sm text-white/80">
+                ↔ Transferível por NFT: ao transferir, o owner anterior perde acesso no próximo refresh.
+              </span>
             </div>
           </div>
         </div>
@@ -350,33 +385,84 @@ export default function App() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl md:text-5xl font-medium tracking-tight mb-4">
-              Features
+              Funcionalidades
             </h2>
-            <p className="text-gray-400 text-lg">Construído para decisões rápidas e informadas</p>
+            <p className="text-gray-400 text-lg">Sinais com contexto — do macro ao micro, em segundos.</p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid lg:grid-cols-3 gap-6">
+            {/* Featured Card - Multi-timeframe */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="lg:col-span-1 p-8 bg-gradient-to-b from-white/5 to-transparent border border-white/10 rounded-2xl hover:-translate-y-0.5 hover:border-white/20 transition group"
+            >
+              <div className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-orange-500/10 ring-1 ring-orange-500/20">
+                <Layers className="h-6 w-6 text-orange-400" />
+              </div>
+              <h3 className="text-xl font-semibold text-white mb-3 group-hover:text-orange-400 transition-colors">
+                Inteligência Multi-timeframe
+              </h3>
+              <p className="text-sm text-white/70 mb-3">
+                Confluência automática entre períodos (1m → 1D) com leitura de regime de mercado.
+              </p>
+              <div className="text-xs text-orange-400/80 font-medium">
+                Outcome: entries com mais confluência
+              </div>
+            </motion.div>
+
+            {/* Regular Cards */}
             {[
-              { title: 'Multi-timeframe intelligence', desc: 'Confluência de sinais em múltiplos períodos' },
-              { title: 'Levels & zones', desc: 'Níveis operacionais e zonas de interesse' },
-              { title: 'Signal scoring', desc: 'Pontuação clara de força dos sinais' },
-              { title: 'Watchlists', desc: 'Monitore seus ativos favoritos' },
-              { title: 'Context panels', desc: 'Contexto de mercado em tempo real' },
-              { title: 'Updates contínuos', desc: 'Melhorias e novos recursos regulares' }
+              {
+                icon: Map,
+                title: 'Níveis & Zonas',
+                desc: 'Suportes, resistências e áreas de interesse com contexto de liquidez.',
+                outcome: 'níveis mais claros'
+              },
+              {
+                icon: BarChart3,
+                title: 'Scoring de Sinal',
+                desc: 'Força do setup em score + confiança. Menos ruído, mais decisão.',
+                outcome: 'priorização rápida'
+              },
+              {
+                icon: Star,
+                title: 'Watchlists',
+                desc: 'Monitore ativos, gatilhos e mudanças de regime em tempo real.',
+                outcome: 'monitoramento inteligente'
+              },
+              {
+                icon: PanelRight,
+                title: 'Painéis de Contexto',
+                desc: 'Contexto de mercado ao lado do gráfico — sem trocar de tela.',
+                outcome: 'análise integrada'
+              },
+              {
+                icon: RefreshCw,
+                title: 'Updates Contínuos',
+                desc: 'Novos módulos e melhorias frequentes — sem reinstalar o app.',
+                outcome: 'produto sempre atual'
+              }
             ].map((feature, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="p-6 bg-gray-900/30 border border-gray-800/30 rounded-lg hover:border-orange-500/30 transition-all duration-200 group"
+                transition={{ delay: (i + 1) * 0.1 }}
+                className="p-6 bg-gradient-to-b from-white/5 to-transparent border border-white/10 rounded-2xl hover:-translate-y-0.5 hover:border-white/20 transition group"
               >
-                <div className="h-1 w-12 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full mb-4" />
-                <h3 className="font-medium mb-2 group-hover:text-orange-500 transition-colors">
+                <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-orange-500/10 ring-1 ring-orange-500/20">
+                  <feature.icon className="h-5 w-5 text-orange-400" />
+                </div>
+                <h3 className="font-semibold text-white mb-2 group-hover:text-orange-400 transition-colors">
                   {feature.title}
                 </h3>
-                <p className="text-sm text-gray-400">{feature.desc}</p>
+                <p className="text-sm text-white/70 mb-3">{feature.desc}</p>
+                <div className="text-xs text-orange-400/80 font-medium">
+                  Outcome: {feature.outcome}
+                </div>
               </motion.div>
             ))}
           </div>
@@ -392,16 +478,34 @@ export default function App() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-medium tracking-tight mb-4">
-              Security & Licensing
+            <h2 className="text-4xl md:text-5xl font-semibold tracking-tight mb-4">
+              Segurança e Licenciamento
             </h2>
+            <p className="text-gray-400">Execução desktop. Propriedade on-chain. Ativação vinculada ao dispositivo.</p>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-6 mb-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             {[
-              { title: 'SIWE Authentication', desc: 'Login por assinatura. Sem senha.' },
-              { title: 'On-chain validity', desc: 'Licença verificável na Scroll.' },
-              { title: 'Device activation', desc: 'Sessões renováveis para manter controle.' }
+              {
+                icon: ShieldCheck,
+                title: 'Autenticação SIWE',
+                desc: 'Login por assinatura. Sem senhas. Sem segredos armazenados.'
+              },
+              {
+                icon: Blocks,
+                title: 'Validade On-chain (Scroll)',
+                desc: 'Propriedade e expiração da licença verificadas na blockchain.'
+              },
+              {
+                icon: Laptop,
+                title: 'Ativação por Dispositivo',
+                desc: 'Um dispositivo ativo por licença. Chaves de sessão vinculadas.'
+              },
+              {
+                icon: KeyRound,
+                title: 'Transferência e Revogação',
+                desc: 'Transfira o NFT → acesso passa para o novo proprietário.'
+              }
             ].map((item, i) => (
               <motion.div
                 key={i}
@@ -409,21 +513,27 @@ export default function App() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="p-6 bg-gray-900/50 border border-gray-800 rounded-lg"
+                className="rounded-2xl border border-white/10 bg-gradient-to-b from-white/5 to-transparent p-6
+                           hover:-translate-y-0.5 hover:border-white/20 transition"
               >
-                <div className="w-12 h-12 bg-orange-500/10 border border-orange-500/20 rounded-md flex items-center justify-center mb-4">
-                  <div className="w-6 h-6 bg-orange-500/20 rounded-sm" />
+                <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-xl
+                                bg-orange-500/10 ring-1 ring-orange-500/20">
+                  <item.icon className="h-5 w-5 text-orange-400" />
                 </div>
-                <h3 className="font-medium mb-2">{item.title}</h3>
-                <p className="text-sm text-gray-400">{item.desc}</p>
+                <h3 className="text-lg font-semibold text-white mb-2">{item.title}</h3>
+                <p className="text-sm text-white/70">{item.desc}</p>
               </motion.div>
             ))}
           </div>
 
-          <div className="text-center text-sm text-gray-400 border border-gray-800 rounded-lg p-6 bg-gray-900/30">
-            <p>
-              Licença é transferível (NFT). O acesso do app acompanha o owner e a validade on-chain.
-            </p>
+          <div className="text-center">
+            <div className="inline-flex items-center gap-3 rounded-xl border border-white/10 bg-gradient-to-r from-white/5 to-transparent px-6 py-4">
+              <KeyRound className="h-5 w-5 text-orange-400" />
+              <div className="text-left">
+                <div className="text-sm font-medium text-white">Licença NFT transferível</div>
+                <div className="text-xs text-white/60">Acesso segue o proprietário e validade on-chain. Proprietário anterior perde acesso após atualização.</div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -442,35 +552,71 @@ export default function App() {
             </h2>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-8 mb-12">
             {[
-              { step: '01', title: 'Connect wallet (SIWE)', desc: 'Autenticação segura por assinatura' },
-              { step: '02', title: 'Choose plan → Mint license on Scroll', desc: 'NFT ERC-721 transferível' },
-              { step: '03', title: 'Download + Activate', desc: 'Token ID + activation code' }
+              {
+                step: '01',
+                icon: Wallet,
+                title: 'Conecte sua wallet (SIWE)',
+                desc: 'Autenticação por assinatura. Sem senha.',
+                outcome: 'sessão autenticada'
+              },
+              {
+                step: '02',
+                icon: CreditCard,
+                title: 'Escolha um plano e emita a licença na Scroll',
+                desc: 'NFT (ERC-721) transferível • validade 30D/365D',
+                outcome: 'licença NFT ativa'
+              },
+              {
+                step: '03',
+                icon: Download,
+                title: 'Baixe e ative no seu PC',
+                desc: 'Token ID + código de ativação • 1 dispositivo ativo',
+                outcome: 'app liberado no desktop'
+              }
             ].map((item, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="relative"
+                className="relative p-6 bg-gradient-to-b from-white/3 to-transparent border border-white/10 rounded-2xl hover:-translate-y-0.5 hover:border-white/20 transition group"
               >
-                <div className="text-6xl font-bold text-gray-800 mb-4">{item.step}</div>
-                <h3 className="font-medium mb-2 text-lg">{item.title}</h3>
-                <p className="text-sm text-gray-400">{item.desc}</p>
-                
-                {i < 2 && (
-                  <div className="hidden md:block absolute top-8 -right-4 w-8 h-px bg-gradient-to-r from-gray-700 to-transparent" />
-                )}
+                <div className="absolute -top-4 left-6 flex items-center justify-center w-8 h-8 bg-orange-500 rounded-full">
+                  <item.icon className="h-4 w-4 text-white" />
+                </div>
+                <div className="text-5xl font-bold text-gray-700 mb-4 opacity-20">{item.step}</div>
+                <h3 className="font-semibold mb-3 text-lg text-white group-hover:text-orange-400 transition-colors">
+                  {item.title}
+                </h3>
+                <p className="text-sm text-white/70 mb-3">{item.desc}</p>
+                <div className="text-xs text-orange-400/80 font-medium">
+                  Outcome: {item.outcome}
+                </div>
               </motion.div>
             ))}
           </div>
 
-          <div className="mt-12 text-center text-sm text-gray-400 border-l-2 border-orange-500/30 pl-4 py-2 bg-gray-900/20 rounded-r">
-            <p>
-              Ao transferir a licença, o acesso acompanha o novo owner na próxima verificação do app.
-            </p>
+          <div className="text-center mb-8">
+            <Button
+              onClick={() => document.querySelector("#pricing")?.scrollIntoView({ behavior: "smooth", block: "start" })}
+              variant="outline"
+              className="border-white/20 hover:border-orange-400/50 transition-colors"
+            >
+              Choose plan
+            </Button>
+            <p className="text-xs text-gray-400 mt-2">Leva 2 min • USDC na Scroll</p>
+          </div>
+
+          <div className="max-w-4xl mx-auto">
+            <div className="flex items-center justify-center gap-3 p-4 bg-gradient-to-r from-white/5 to-transparent border border-white/10 rounded-xl">
+              <KeyRound className="h-5 w-5 text-orange-400 flex-shrink-0" />
+              <p className="text-sm text-white/80 text-center">
+                ↔ Licença transferível: ao transferir, o acesso migra para o novo owner na próxima verificação do app.
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -496,23 +642,34 @@ export default function App() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="p-8 bg-gray-900/50 border border-gray-800 rounded-lg hover:border-orange-500/30 transition-all duration-200"
+              className="p-8 bg-gradient-to-b from-white/5 to-transparent border border-white/10 rounded-2xl hover:-translate-y-0.5 hover:border-white/20 transition"
             >
-              <div className="mb-6">
-                <h3 className="text-2xl font-medium mb-2">Pro Mensal (30D)</h3>
-                <div className="text-sm text-gray-400 space-y-1">
-                  <div>Validade: 30 dias</div>
-                  <div>1 dispositivo</div>
-                  <div>Updates incluídos</div>
+              <div className="text-center mb-8">
+                <h3 className="text-2xl font-semibold text-white mb-4">Pro 30D</h3>
+                <div className="mb-2">
+                  <div className="text-4xl font-bold text-white">49</div>
+                  <div className="text-lg text-orange-400 font-semibold">USDC</div>
+                </div>
+                <div className="text-sm text-gray-400 mb-1">+ gas na Scroll (baixo)</div>
+                <div className="text-xs text-gray-500">Cobrança em USDC • Scroll</div>
+              </div>
+
+              <div className="space-y-3 mb-8">
+                <div className="flex items-center gap-3 text-sm text-white/80">
+                  <Monitor className="h-4 w-4 text-orange-400 flex-shrink-0" />
+                  <span>1 dispositivo ativo</span>
+                </div>
+                <div className="flex items-center gap-3 text-sm text-white/80">
+                  <RefreshCw className="h-4 w-4 text-orange-400 flex-shrink-0" />
+                  <span>Updates incluídos</span>
+                </div>
+                <div className="flex items-center gap-3 text-sm text-white/80">
+                  <KeyRound className="h-4 w-4 text-orange-400 flex-shrink-0" />
+                  <span>Transferível (NFT)</span>
                 </div>
               </div>
 
-              <div className="mb-6">
-                <div className="text-sm text-gray-400 mb-2">Preço on-chain</div>
-                <div className="text-xs font-mono text-gray-500">Exibido na wallet</div>
-              </div>
-
-              <Button 
+              <Button
                 onClick={() => {
                   if (walletState === 'disconnected') {
                     connectWallet();
@@ -521,10 +678,14 @@ export default function App() {
                   }
                 }}
                 disabled={txState === 'pending'}
-                className="w-full bg-orange-500 hover:bg-orange-600 transition-all duration-200"
+                variant="outline"
+                className="w-full border-white/20 hover:border-orange-400/50 transition-colors mb-2"
               >
-                {txState === 'pending' ? 'Minting...' : 'Mint 30D'}
+                {txState === 'pending' ? 'Processando...' : 'Get license'}
               </Button>
+              <div className="text-center text-xs text-gray-500">
+                Mint on Scroll • USDC • ERC-721
+              </div>
             </motion.div>
 
             {/* 365D Plan */}
@@ -533,27 +694,39 @@ export default function App() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="p-8 bg-gradient-to-br from-orange-500/5 to-gray-900/50 border border-orange-500/30 rounded-lg relative overflow-hidden"
+              className="relative p-8 bg-gradient-to-b from-orange-500/10 to-white/5 border border-orange-500/30 rounded-2xl hover:-translate-y-1 hover:border-orange-400/50 transition overflow-hidden"
             >
-              <Badge className="absolute top-4 right-4 bg-orange-500 text-white border-0">
+              <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 via-transparent to-orange-500/10 rounded-2xl"></div>
+              <Badge className="absolute top-4 right-4 bg-orange-500 text-white border-0 z-10">
                 Melhor valor
               </Badge>
 
-              <div className="mb-6">
-                <h3 className="text-2xl font-medium mb-2">Pro Anual (365D)</h3>
-                <div className="text-sm text-gray-400 space-y-1">
-                  <div>Validade: 365 dias</div>
-                  <div>1 dispositivo</div>
-                  <div>Updates incluídos</div>
+              <div className="relative text-center mb-8">
+                <h3 className="text-2xl font-semibold text-white mb-4">Pro 365D</h3>
+                <div className="mb-2">
+                  <div className="text-4xl font-bold text-white">399</div>
+                  <div className="text-lg text-orange-400 font-semibold">USDC</div>
+                </div>
+                <div className="text-sm text-gray-400 mb-1">≈ 1.09 USDC/dia</div>
+                <div className="text-xs text-green-400 font-medium">Economize ~32% vs mensal</div>
+              </div>
+
+              <div className="relative space-y-3 mb-8">
+                <div className="flex items-center gap-3 text-sm text-white/80">
+                  <Monitor className="h-4 w-4 text-orange-400 flex-shrink-0" />
+                  <span>1 dispositivo ativo</span>
+                </div>
+                <div className="flex items-center gap-3 text-sm text-white/80">
+                  <RefreshCw className="h-4 w-4 text-orange-400 flex-shrink-0" />
+                  <span>Updates incluídos</span>
+                </div>
+                <div className="flex items-center gap-3 text-sm text-white/80">
+                  <KeyRound className="h-4 w-4 text-orange-400 flex-shrink-0" />
+                  <span>Transferível (NFT)</span>
                 </div>
               </div>
 
-              <div className="mb-6">
-                <div className="text-sm text-gray-400 mb-2">Preço on-chain</div>
-                <div className="text-xs font-mono text-gray-500">Exibido na wallet</div>
-              </div>
-
-              <Button 
+              <Button
                 onClick={() => {
                   if (walletState === 'disconnected') {
                     connectWallet();
@@ -562,10 +735,13 @@ export default function App() {
                   }
                 }}
                 disabled={txState === 'pending'}
-                className="w-full bg-orange-500 hover:bg-orange-600 transition-all duration-200"
+                className="relative w-full bg-orange-500 hover:bg-orange-600 transition-all duration-200 mb-2"
               >
-                {txState === 'pending' ? 'Minting...' : 'Mint 365D'}
+                {txState === 'pending' ? 'Processando...' : 'Get license'}
               </Button>
+              <div className="relative text-center text-xs text-gray-500">
+                Mint on Scroll • USDC • ERC-721
+              </div>
             </motion.div>
           </div>
 
@@ -720,7 +896,7 @@ export default function App() {
 
       {/* FAQ Section */}
       <section id="faq" className="py-24 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-4xl mx-auto">
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -730,33 +906,42 @@ export default function App() {
             <h2 className="text-4xl md:text-5xl font-medium tracking-tight mb-4">
               FAQ
             </h2>
+            <p className="text-gray-400">Licença, ativação, transferência e uso do Radar Standalone.</p>
           </motion.div>
 
           <Accordion type="single" collapsible className="space-y-4">
             {[
               {
+                q: 'Como funciona ativação (1 dispositivo)?',
+                a: 'Ative 1 dispositivo por vez para garantir controle, updates e revogação.\n\n• Ao ativar, o app cria uma sessão vinculada ao dispositivo.\n• Você pode reativar quando necessário (ex.: troca de máquina), respeitando as regras de segurança.'
+              },
+              {
+                q: 'E se eu trocar de computador?',
+                a: 'Você faz re-ativação com sua wallet + token/ID.\n\n• O dispositivo anterior perde acesso na próxima verificação.\n• Se precisar, o suporte pode ajudar em casos de troca/format.'
+              },
+              {
                 q: 'A licença é transferível?',
-                a: 'Sim. É um NFT. O acesso do app acompanha o owner atual.'
+                a: 'Sim. A licença é um NFT — quem possui a NFT possui o acesso enquanto válida.\n\n• Transferência acontece on-chain (Scroll).\n• Validade e owner são verificados pelo app.'
               },
               {
                 q: 'O que acontece se eu transferir a licença?',
-                a: 'O acesso do owner anterior expira no próximo refresh de ativação.'
-              },
-              {
-                q: 'Quantos dispositivos posso ativar?',
-                a: '1 por licença. Assentos adicionais podem ser adquiridos.'
+                a: 'O acesso acompanha o novo owner.\n\n• O owner anterior perde acesso na próxima atualização/verificação.\n• Não há "duas ativações" simultâneas.'
               },
               {
                 q: 'Funciona offline?',
-                a: 'O app roda localmente, mas pode exigir validação periódica para manter ativação e updates.'
+                a: 'Parcialmente.\n\n• A interface abre e você pode navegar.\n• Para validar licença/owner e puxar dados em tempo real, precisa conexão.'
               },
               {
                 q: 'Como funciona renovação?',
-                a: 'Basta mintar uma renovação/estender a validade on-chain.'
+                a: 'Renovação = mint de uma nova validade (ou extensão).\n\n• Sem cartão/fiat: pagamento em crypto na Scroll.\n• A licença expira automaticamente on-chain.'
+              },
+              {
+                q: 'Preciso ter crypto para usar?',
+                a: 'Sim — para mint/renovar você precisa de USDC na Scroll e um pouco de ETH para gas.\n\n• Gas é baixo.\n• Se você já tem wallet, é bem direto.'
               },
               {
                 q: 'Isso é conselho financeiro?',
-                a: 'Não. É uma ferramenta de análise e monitoramento.'
+                a: 'Não. O Radar é uma ferramenta de análise e monitoramento.\n\n• Você toma as decisões.\n• Nada aqui garante retornos.'
               }
             ].map((item, i) => (
               <AccordionItem 
@@ -773,6 +958,84 @@ export default function App() {
               </AccordionItem>
             ))}
           </Accordion>
+
+          <div className="text-center mt-12">
+            <div className="text-sm text-gray-400 mb-4">
+              Precisa de ajuda? <a href="#" className="text-orange-400 hover:text-orange-300">Suporte via Telegram →</a>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button
+                onClick={() => document.querySelector("#pricing")?.scrollIntoView({ behavior: "smooth", block: "start" })}
+                className="bg-orange-500 hover:bg-orange-600"
+              >
+                Choose plan
+              </Button>
+              <a href="#pricing" className="text-orange-400 hover:text-orange-300 text-sm font-medium inline-flex items-center gap-2">
+                Go to pricing →
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Terms & Privacy Section */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-900/50">
+        <div className="max-w-4xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-12">
+            {/* Terms of Service */}
+            <div id="terms">
+              <h3 className="text-xl font-semibold text-white mb-4">Terms of Service</h3>
+              <div className="text-sm text-gray-300 space-y-3">
+                <p>
+                  <strong>SNE Radar Standalone</strong> é uma ferramenta de análise técnica e monitoramento de mercado.
+                  Não constitui recomendação de investimento, aconselhamento financeiro, jurídico ou fiscal.
+                </p>
+                <p>
+                  Ao adquirir uma licença, você concorda com os seguintes termos:
+                </p>
+                <ul className="list-disc list-inside space-y-1 text-gray-400">
+                  <li>Licença é válida por 30 ou 365 dias a partir da ativação</li>
+                  <li>Acesso limitado a 1 dispositivo ativo por licença</li>
+                  <li>Licença é transferível via NFT na blockchain Scroll</li>
+                  <li>Responsabilidade limitada ao valor pago pela licença</li>
+                  <li>Uso permitido apenas para análise pessoal</li>
+                </ul>
+                <p className="text-xs text-gray-500 mt-4">
+                  Para termos completos, consulte documentação técnica.
+                </p>
+              </div>
+            </div>
+
+            {/* Privacy Policy */}
+            <div id="privacy">
+              <h3 className="text-xl font-semibold text-white mb-4">Privacy Policy</h3>
+              <div className="text-sm text-gray-300 space-y-3">
+                <p>
+                  Respeitamos sua privacidade e não coletamos dados pessoais desnecessários.
+                </p>
+                <p>
+                  <strong>Dados coletados:</strong>
+                </p>
+                <ul className="list-disc list-inside space-y-1 text-gray-400">
+                  <li>Endereço da wallet (para verificação de propriedade NFT)</li>
+                  <li>Dados de uso anônimos (para melhorias do produto)</li>
+                  <li>Informações de contato voluntárias (suporte)</li>
+                </ul>
+                <p>
+                  <strong>Não coletamos:</strong>
+                </p>
+                <ul className="list-disc list-inside space-y-1 text-gray-400">
+                  <li>Dados financeiros ou de transações</li>
+                  <li>Histórico de navegação ou preferências pessoais</li>
+                  <li>Informações sensíveis ou identificáveis</li>
+                </ul>
+                <p className="text-xs text-gray-500 mt-4">
+                  Seus dados são criptografados e armazenados com segurança.
+                  Para dúvidas sobre privacidade, contate nosso suporte.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -781,16 +1044,16 @@ export default function App() {
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-8">
             <div className="flex items-center gap-2">
-              <img src="/favicon/favicon.svg" alt="SNE Radar" className="w-8 h-8" />
+              <img src="/favicon-96x96.png" alt="SNE Radar" className="w-8 h-8" />
               <span className="font-medium tracking-tight">SNE Radar Standalone</span>
             </div>
             
             <div className="flex items-center gap-6 text-sm text-gray-400">
-              <a href="#" className="hover:text-gray-100 transition-colors">Docs</a>
-              <a href="#" className="hover:text-gray-100 transition-colors">Status</a>
-              <a href="#" className="hover:text-gray-100 transition-colors">Terms</a>
-              <a href="#" className="hover:text-gray-100 transition-colors">Privacy</a>
-              <a href="#" className="hover:text-gray-100 transition-colors">Support</a>
+              <a href="https://snelabs.space/docs#overview" target="_blank" rel="noopener noreferrer" className="hover:text-gray-100 transition-colors">SNE OS (Docs)</a>
+              <a href="https://snelabs.space/home" target="_blank" rel="noopener noreferrer" className="hover:text-gray-100 transition-colors">Status</a>
+              <a href="#terms" className="hover:text-gray-100 transition-colors">Terms</a>
+              <a href="#privacy" className="hover:text-gray-100 transition-colors">Privacy</a>
+              <a href="https://t.me/snelabs" target="_blank" rel="noopener noreferrer" className="hover:text-gray-100 transition-colors">Support</a>
             </div>
           </div>
 
@@ -809,20 +1072,26 @@ export default function App() {
       </footer>
 
       {/* Sticky Mobile CTA */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 p-4 bg-gray-900/95 backdrop-blur-lg border-t border-gray-800 z-40">
-        <div className="flex gap-2">
-          <Button 
-            onClick={() => mintLicense('30D')}
-            className="flex-1 bg-orange-500 hover:bg-orange-600"
+      <div
+        className="
+          md:hidden fixed bottom-0 left-0 right-0 z-40
+          border-t border-gray-800 bg-gray-900/95 backdrop-blur-lg
+          p-4 pb-[calc(1rem+env(safe-area-inset-bottom))]
+        "
+      >
+        <div className="flex items-center gap-3">
+          <div className="flex-1">
+            <div className="text-sm font-medium text-gray-100">Unlock NTE on desktop</div>
+            <div className="text-xs text-gray-400">From 49 USDC • Scroll • 1 active device</div>
+          </div>
+
+          <Button
+            onClick={() =>
+              document.querySelector("#pricing")?.scrollIntoView({ behavior: "smooth", block: "start" })
+            }
+            className="shrink-0 bg-orange-500 hover:bg-orange-600"
           >
-            Mint 30D
-          </Button>
-          <Button 
-            onClick={() => mintLicense('365D')}
-            variant="outline"
-            className="flex-1 border-gray-700"
-          >
-            Mint 365D
+            Choose plan
           </Button>
         </div>
       </div>
