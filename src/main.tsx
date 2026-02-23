@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { WagmiProvider } from 'wagmi'
+import { Analytics } from '@vercel/analytics/react'
 import { config } from './lib/wagmi'
 import App from './app/App.tsx'
 import './styles/index.css'
@@ -14,6 +15,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
         <App />
+        <Analytics />
       </QueryClientProvider>
     </WagmiProvider>
   </React.StrictMode>,
